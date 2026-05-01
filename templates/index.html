@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>The E-commerce Аналитика</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600&family=Lora:ital@1&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; background: #000; overflow: hidden; }
+        .noise::before {
+            content: ""; position: fixed; top: -100%; left: -100%; width: 300%; height: 300%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.15; z-index: 100; pointer-events: none; animation: noise-move 0.2s infinite;
+        }
+        @keyframes noise-move { 0% { transform: translate(0,0); } 100% { transform: translate(5px,5px); } }
+        .bg-img {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.8)), url('https://i.ibb.co/vz6m0Z0/books.jpg');
+            background-size: cover; background-position: center; filter: sepia(20%) brightness(50%); z-index: 1;
+        }
+        .content { position: relative; z-index: 200; color: #fff; text-align: center; padding-top: 20vh; }
+        h1 { font-family: 'Cinzel', serif; font-size: 3.5rem; letter-spacing: 10px; color: #8b0000; text-shadow: 0 0 20px #000; }
+        .gothic-card {
+            background: rgba(0,0,0,0.85); border: 1px solid #444; padding: 40px; margin-top: 30px;
+            transition: 0.5s; cursor: pointer; text-decoration: none; display: block; color: #aaa;
+        }
+        .gothic-card:hover { border-color: #8b0000; color: #fff; box-shadow: 0 0 30px rgba(139,0,0,0.4); transform: translateY(-5px); }
+    </style>
+</head>
+<body class="noise">
+    <div class="bg-img"></div>
+    <div class="container content">
+        <h1>Аналитика Гегемонии</h1>
+        <p style="color: #666; letter-spacing: 3px; font-style: italic;">STRATEGIES OF GLOBAL DOMINANCE</p>
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-5 mx-2"><a href="/alibaba" class="gothic-card"><h3>ALIBABA</h3><p class="small">Левиафан B2B сегмента</p></a></div>
+            <div class="col-md-5 mx-2"><a href="/amazon" class="gothic-card"><h3>AMAZON</h3><p class="small">Абсолютный B2C диктат</p></a></div>
+        </div>
+    </div>
+</body>
+</html>
