@@ -3,92 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body {
-            background: #0f172a; /* Темный фон, чтоб стекло заиграло */
-            color: white;
-            font-family: 'Inter', sans-serif;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+        body { 
+            background: radial-gradient(circle at top, #1c1e26 0%, #0b0c10 100%); 
+            color: #ffffff; 
+            font-family: 'Inter', sans-serif; 
+            padding-top: 50px; 
             min-height: 100vh;
-            overflow-x: hidden;
         }
 
-        /* Контейнер для плашки */
-        .glass-container {
-            width: 90%;
-            max-width: 800px;
+        /* КОНТЕЙНЕР-ПЛАШКА */
+        .content-box { 
+            position: relative; /* Чтобы позиционировать кнопку внутри если надо */
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(25px); 
+            -webkit-backdrop-filter: blur(25px);
             
-            /* ЭФФЕКТ ЖИДКОГО СТЕКЛА */
-            background: rgba(255, 255, 255, 0.05); /* Еле заметный белый */
-            backdrop-filter: blur(15px); /* Размытие фона */
-            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.12); 
+            border-radius: 24px; 
+            padding: 50px; 
+            box-shadow: 0 40px 100px rgba(0,0,0,0.7), inset 0 0 20px rgba(255,255,255,0.05);
             
-            border: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая грань */
-            border-radius: 24px;
-            padding: 40px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            
-            /* ПЛАВНОЕ ПОЯВЛЕНИЕ */
+            /* АНИМАЦИЯ ВЫПЛЫВАНИЯ */
             opacity: 0;
-            transform: translateY(40px) scale(0.98); /* Немного ниже и чуть меньше */
-            animation: emerge 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            transform: translateY(60px); 
+            animation: glassAppear 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
 
-        @keyframes emerge {
+        @keyframes glassAppear {
             to {
                 opacity: 1;
-                transform: translateY(0) scale(1);
+                transform: translateY(0);
             }
         }
 
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 10px;
-            background: linear-gradient(90deg, #fff, #94a3b8);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .mode-badge {
-            display: inline-block;
-            padding: 4px 12px;
-            background: rgba(59, 130, 246, 0.2);
-            border: 1px solid rgba(59, 130, 246, 0.5);
-            border-radius: 100px;
-            font-size: 0.8rem;
+        /* КНОПКА НАЗАД ВНУТРИ ПЛАШКИ */
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-weight: 600;
+            margin-bottom: 25px;
+            transition: all 0.4s ease;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            margin-bottom: 20px;
-            color: #60a5fa;
+            letter-spacing: 2px;
+            font-size: 0.85rem;
         }
 
-        .story-text {
-            line-height: 1.8;
-            color: #cbd5e1;
-            white-space: pre-line; /* Чтобы переносы из Python работали */
+        .back-link:hover {
+            color: #00a2ff;
+            transform: translateX(-8px); /* Уплывает влево при наведении */
         }
 
-        /* Доп эффект: легкое свечение сверху */
-        .glass-container::before {
-            content: "";
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            border-radius: 24px;
-            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 40%);
-            pointer-events: none;
+        .back-link svg {
+            margin-right: 8px;
+            transition: transform 0.4s ease;
+        }
+        
+        .back-link:hover svg {
+            transform: scale(1.2);
+        }
+
+        h1 { 
+            font-weight: 800; 
+            color: #ffffff; 
+            font-size: 2.5rem;
+            margin-bottom: 15px; 
+            text-shadow: 0 10px 20px rgba(0,0,0,0.4); 
+        }
+
+        .badge { 
+            font-size: 0.85rem; 
+            background: rgba(0, 122, 255, 0.15) !important; 
+            border: 1px solid rgba(0, 122, 255, 0.4);
+            color: #00a2ff !important;
+            padding: 8px 16px; 
+            margin-bottom: 35px; 
+            font-weight: bold;
+            border-radius: 10px;
+            text-transform: uppercase;
+        }
+        
+        .text-body { 
+            font-size: 1.2rem; 
+            line-height: 1.8; 
+            color: #ffffff !important; 
+            white-space: pre-line; 
+            text-align: justify;
+            opacity: 0.95;
+        }
+
+        /* КНОПКА ВОЗВРАТА ВНИЗУ (Дублирующая для удобства) */
+        .bottom-return {
+            margin-top: 40px;
+            text-align: center;
+        }
+
+        .btn-glass {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: white;
+            padding: 12px 30px;
+            border-radius: 12px;
+            text-decoration: none;
+            transition: all 0.3s;
+            display: inline-block;
+        }
+
+        .btn-glass:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: #00a2ff;
+            box-shadow: 0 0 20px rgba(0, 162, 255, 0.4);
+            color: white;
         }
     </style>
 </head>
 <body>
 
-    <div class="glass-container">
-        <div class="mode-badge">{{ mode }}</div>
-        <h1>{{ title }}</h1>
-        <div class="story-text">
-            {{ story }}
+    <div class="container mb-5 mt-4">
+        <div class="content-box">
+            <!-- Верхняя стрелка назад -->
+            <a href="/" class="back-link">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+                Вернуться в меню
+            </a>
+
+            <h1>{{ title }}</h1>
+            <div class="badge">{{ mode }}</div>
+            
+            <div class="text-body">
+                {{ story }}
+            </div>
+
+            <!-- Нижняя кнопка "Назад" на случай, если лонгрид дочитали до конца -->
+            <div class="bottom-return">
+                <a href="/" class="btn-glass">Завершить анализ</a>
+            </div>
         </div>
     </div>
 
