@@ -3,54 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <title>{{ title }}</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { 
-            background-color: #0b0c10; 
-            color: #ffffff; 
-            font-family: 'Inter', sans-serif; 
-            padding-top: 30px; 
-            line-height: normal;
+        body {
+            background: #0f172a; /* Темный фон, чтоб стекло заиграло */
+            color: white;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
         }
-        .content-box { 
-            background: rgba(20, 22, 27, 0.95); /* Темнее и плотнее фон */
-            border: 1px solid rgba(255, 255, 255, 0.2); 
-            border-radius: 12px; 
-            padding: 40px; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+
+        /* Контейнер для плашки */
+        .glass-container {
+            width: 90%;
+            max-width: 800px;
+            
+            /* ЭФФЕКТ ЖИДКОГО СТЕКЛА */
+            background: rgba(255, 255, 255, 0.05); /* Еле заметный белый */
+            backdrop-filter: blur(15px); /* Размытие фона */
+            -webkit-backdrop-filter: blur(15px);
+            
+            border: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая грань */
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            
+            /* ПЛАВНОЕ ПОЯВЛЕНИЕ */
+            opacity: 0;
+            transform: translateY(40px) scale(0.98); /* Немного ниже и чуть меньше */
+            animation: emerge 1.2s cubic-bezier(0.22, 1, 0.36, 1) forwards;
         }
-        h1 { font-weight: 800; color: #ffffff; margin-bottom: 10px; text-shadow: 2px 2px 4px #000; }
-        .badge { 
-            font-size: 1rem; 
-            background-color: #007bff !important; 
-            padding: 8px 15px; 
-            margin-bottom: 25px; 
-            font-weight: bold;
+
+        @keyframes emerge {
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
         }
-        
-        /* ГЛАВНОЕ: КИПЕЛЬНО БЕЛЫЙ ЦВЕТ */
-        .text-body { 
-            font-size: 1.2rem; 
-            line-height: 1.7; 
-            color: #ffffff !important; /* ЧИСТО БЕЛЫЙ */
-            white-space: pre-line; 
-            text-align: justify;
-            text-shadow: 1px 1px 2px rgba(0,0,0,1); /* Тень для читаемости */
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, #fff, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
-        
-        .back-btn { color: #00a2ff; text-decoration: none; font-weight: 700; display: inline-block; margin-bottom: 15px; }
-        .back-btn:hover { color: #ffffff; }
+
+        .mode-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(59, 130, 246, 0.2);
+            border: 1px solid rgba(59, 130, 246, 0.5);
+            border-radius: 100px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            color: #60a5fa;
+        }
+
+        .story-text {
+            line-height: 1.8;
+            color: #cbd5e1;
+            white-space: pre-line; /* Чтобы переносы из Python работали */
+        }
+
+        /* Доп эффект: легкое свечение сверху */
+        .glass-container::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 40%);
+            pointer-events: none;
+        }
     </style>
 </head>
 <body>
-    <div class="container mb-5">
-        <a href="/" class="back-btn">← НА ГЛАВНУЮ</a>
-        <div class="content-box">
-            <h1>{{ title }}</h1>
-            <div class="badge">{{ mode }}</div>
-            <div class="text-body">{{ story }}</div>
+
+    <div class="glass-container">
+        <div class="mode-badge">{{ mode }}</div>
+        <h1>{{ title }}</h1>
+        <div class="story-text">
+            {{ story }}
         </div>
     </div>
+
 </body>
 </html>
+
