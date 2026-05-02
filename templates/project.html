@@ -6,28 +6,36 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #0b0c10; color: #fff; font-family: 'Inter', sans-serif; padding-top: 80px; }
+        body { background-color: #0b0c10; color: #fff; font-family: 'Inter', sans-serif; padding-top: 50px; }
         .content-box { 
-            background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 32px; padding: 60px; backdrop-filter: blur(10px);
-            animation: fadeIn 0.8s ease;
+            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); 
+            border-radius: 20px; padding: 40px; backdrop-filter: blur(10px);
         }
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
-        h1 { font-weight: 800; border-left: 6px solid #0d6efd; padding-left: 20px; margin-bottom: 20px; }
-        .badge { font-size: 1rem; padding: 10px 20px; border-radius: 100px; margin-bottom: 30px; }
-        .text-body { font-size: 1.2rem; line-height: 1.8; color: #ccc; white-space: pre-line; text-align: justify; }
-        .back-btn { color: #0d6efd; text-decoration: none; font-weight: 700; transition: 0.3s; }
-        .back-btn:hover { color: #fff; }
+        h1 { font-weight: 800; color: #fff; margin-bottom: 10px; border-left: 5px solid #007bff; padding-left: 15px; }
+        .badge { font-size: 0.9rem; background-color: #007bff !important; padding: 8px 15px; margin-bottom: 30px; border-radius: 5px; }
+        
+        /* ВОТ ТУТ ПОПРАВИЛ ЦВЕТ ТЕКСТА */
+        .text-body { 
+            font-size: 1.15rem; 
+            line-height: 1.8; 
+            color: #ececec; /* Очень светлый серый, почти белый */
+            white-space: pre-line; 
+            text-align: justify; 
+        }
+        
+        .back-btn { color: #007bff; text-decoration: none; font-weight: 700; margin-bottom: 20px; display: inline-block; transition: 0.3s; }
+        .back-btn:hover { color: #fff; transform: translateX(-5px); }
     </style>
 </head>
 <body>
     <div class="container mb-5">
         <a href="/" class="back-btn">← ВЕРНУТЬСЯ НА ПАНЕЛЬ</a>
-        <div class="content-box mt-4">
+        <div class="content-box">
             <h1>{{ title }}</h1>
-            <div class="badge bg-primary">{{ mode }}</div>
+            <div class="badge">{{ mode }}</div>
             <div class="text-body">{{ story }}</div>
         </div>
     </div>
 </body>
 </html>
+
