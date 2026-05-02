@@ -2,84 +2,184 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ecommerce Анализ</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Tech Analysis Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
+    <!-- Либа для конфетти -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        :root { 
-            --primary-blue: #00a2ff; /* Основной синий */
-            --soft-blue: #70c5ff;    /* Мягкий синий для текста */
-            --bg-dark: #0b0c10; 
+        :root { --glass: rgba(255, 255, 255, 0.03); --border: rgba(255, 255, 255, 0.12); --accent: #007bff; }
+        body { 
+            background: radial-gradient(circle at top, #1c1e26 0%, #0b0c10 100%); 
+            color: #ffffff; font-family: 'Inter', sans-serif; min-height: 100vh; margin: 0; padding: 40px 20px;
+            overflow-x: hidden;
         }
-        body { font-family: 'Inter', sans-serif; background-color: var(--bg-dark); color: #fff; overflow-x: hidden; }
-        
-        .blob {
-            position: absolute; width: 600px; height: 600px;
-            background: radial-gradient(circle, rgba(0, 162, 255, 0.08) 0%, rgba(0,0,0,0) 70%);
-            border-radius: 50%; z-index: -1; animation: move 20s infinite alternate;
-        }
-        @keyframes move { from { transform: translate(-10%, -10%); } to { transform: translate(20%, 20%); } }
+        .container { max-width: 800px; margin: 0 auto; position: relative; }
 
-        .hero { padding: 90px 0 50px; text-align: center; }
-        h1 { 
-            font-size: 3.2rem; font-weight: 700; 
-            color: #fff;
-            letter-spacing: -1px;
+        /* СТИЛЬ ПЛАШЕК */
+        .glass-card {
+            background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--border); border-radius: 24px; padding: 40px; margin-bottom: 25px;
+            box-shadow: 0 40px 100px rgba(0,0,0,0.5);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0; transform: translateY(30px); animation: emerge 0.8s forwards;
         }
+        @keyframes emerge { to { opacity: 1; transform: translateY(0); } }
 
-        .stat-card {
-            background: rgba(255, 255, 255, 0.04); 
-            border: 1px solid rgba(0, 162, 255, 0.2);
-            border-radius: 16px; padding: 35px; text-decoration: none; display: block; 
-            transition: all 0.3s ease-in-out; opacity: 0; animation: fadeInUp 0.6s forwards;
-        }
-        
-        /* СИНЕНЬКИЙ ТЕКСТ ТУТ */
-        .stat-card h3 { 
-            color: var(--primary-blue); 
-            font-weight: 700; 
-            font-size: 1.4rem; 
-            margin-bottom: 8px; 
-        }
-        .stat-card p { 
-            color: var(--soft-blue); 
-            font-weight: 400; 
-            font-size: 1rem; 
-            margin: 0; 
-        }
-        
-        .stat-card:hover {
-            background: rgba(0, 162, 255, 0.05); 
-            border-color: var(--primary-blue);
-            transform: translateY(-5px); 
-            box-shadow: 0 12px 25px rgba(0, 162, 255, 0.15);
-        }
+        .hidden { display: none !important; }
+        .fade-out { opacity: 0; transform: scale(0.9) translateY(-20px); pointer-events: none; }
 
-        .delay-1 { animation-delay: 0.1s; }
-        .delay-2 { animation-delay: 0.2s; }
-        .delay-3 { animation-delay: 0.3s; }
-        .delay-4 { animation-delay: 0.4s; }
+        h1 { font-weight: 800; margin-bottom: 15px; }
+        .btn-main { 
+            display: inline-block; background: var(--accent); color: white; text-decoration: none; 
+            padding: 14px 30px; border-radius: 12px; font-weight: bold; transition: 0.3s; border: none; cursor: pointer;
+        }
+        .btn-main:hover { background: #00a2ff; box-shadow: 0 0 20px rgba(0, 162, 255, 0.4); transform: translateY(-2px); }
 
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        /* ТЕСТОВАЯ СИСТЕМА */
+        .question-box { background: rgba(255,255,255,0.05); padding: 25px; border-radius: 18px; margin-bottom: 20px; border: 1px solid transparent; }
+        .option { 
+            display: block; padding: 15px; background: rgba(255,255,255,0.03); 
+            border-radius: 10px; margin: 10px 0; cursor: pointer; transition: 0.3s; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .option:hover { background: rgba(255,255,255,0.08); border-color: var(--accent); }
+        .option input { margin-right: 15px; transform: scale(1.2); }
+
+        /* ЛИВЕНЬ */
+        #rain-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; display: none; }
+        .drop { position: absolute; width: 1px; height: 25px; background: linear-gradient(to bottom, transparent, #fff); opacity: 0.3; animation: fall linear infinite; }
+        @keyframes fall { to { transform: translateY(100vh); } }
     </style>
 </head>
 <body>
-    <div class="blob"></div>
-    <div class="blob" style="right: 0; top: 20%; background: radial-gradient(circle, rgba(0, 162, 255, 0.05) 0%, rgba(0,0,0,0) 70%);"></div>
+    <div id="rain-container"></div>
+    <div class="container text-center">
+        
+        <div id="main-header">
+            <h1 style="font-size: 2.5rem; margin-bottom: 40px;">Образовательный Курс</h1>
+        </div>
 
-    <div class="hero container">
-        <h1>Ecommerce Анализ</h1>
-        <p style="color: #6a6a6a;">Сравнение ведущих платформ и стратегий их создателей</p>
-    </div>
+        <!-- Контейнер с плашками -->
+        <div id="plates-container">
+            <div id="p-alibaba" class="glass-card text-start">
+                <h2>Alibaba: Левиафан Востока</h2>
+                <p style="color: #ccc;">Глубокий анализ экосистемы Джека Ма.</p>
+                <a href="/alibaba" class="btn-main">Изучить</a>
+            </div>
 
-    <div class="container pb-5">
-        <div class="row g-4">
-            <div class="col-md-6"><a href="/alibaba" class="stat-card delay-1"><h3>ALIBABA</h3><p>Анализ глобальной B2B сети</p></a></div>
-            <div class="col-md-6"><a href="/amazon" class="stat-card delay-2"><h3>AMAZON</h3><p>Доминирование в B2C сегменте</p></a></div>
-            <div class="col-md-6"><a href="/jack-ma" class="stat-card delay-3"><h3>ДЖЕК МА</h3><p>История создания Alibaba Group</p></a></div>
-            <div class="col-md-6"><a href="/jeff-bezos" class="stat-card delay-4"><h3>ДЖЕФФ БЕЗОС</h3><p>Становление империи Amazon</p></a></div>
+            <div id="p-amazon" class="glass-card text-start">
+                <h2>Amazon: Диктатор Ритейла</h2>
+                <p style="color: #ccc;">Технологический аудит империи Безоса.</p>
+                <a href="/amazon" class="btn-main">Изучить</a>
+            </div>
+        </div>
+
+        <!-- Плашка повторения -->
+        <div id="review-zone" class="glass-card hidden text-start">
+            <h1>Все материалы изучены! 🧠</h1>
+            <p>Краткое повторение перед финальным тестом:</p>
+            <ul style="line-height: 1.8; color: #cbd5e1;">
+                <li><b>Alibaba:</b> 17 друзей в квартире, Taobao без комиссий, Alipay для доверия, 583к заказов/сек.</li>
+                <li><b>Amazon:</b> Книги как старт, AWS держит пол-интернета, Anticipatory Shipping предсказывает заказ.</li>
+            </ul>
+            <button class="btn-main" style="width: 100%;" onclick="startTest()">ПЕРЕЙТИ К ТЕСТУ</button>
+        </div>
+
+        <!-- Тест -->
+        <div id="test-zone" class="glass-card hidden text-start">
+            <h1>Итоговое тестирование</h1>
+            <div id="quiz-content"></div>
+            <button class="btn-main" style="width: 100%;" onclick="checkResults()">УЗНАТЬ РЕЗУЛЬТАТ</button>
+        </div>
+
+        <!-- Результат -->
+        <div id="result-zone" class="glass-card hidden">
+            <h1 id="res-title"></h1>
+            <div id="res-score" style="font-size: 5rem; font-weight: 800; color: var(--accent);">0%</div>
+            <p id="res-desc" style="font-size: 1.2rem; margin-bottom: 30px;"></p>
+            <div style="display: flex; gap: 15px; justify-content: center;">
+                <button class="btn-main" id="retry-btn" onclick="location.reload()">ПЕРЕПРОЙТИ</button>
+                <button class="btn-main" style="background: #444;" onclick="resetAll()">СБРОСИТЬ ВСЁ</button>
+            </div>
         </div>
     </div>
+
+    <script>
+        const questions = [
+            { q: "Где Джек Ма основал Alibaba в 1999 году?", a: ["В гараже", "В своей квартире", "В Технопарке"], c: 1 },
+            { q: "Почему Taobao победил eBay в Китае?", a: ["Бесплатная доставка", "Отсутствие комиссий для продавцов", "Госзаказ"], c: 1 },
+            { q: "Какую проблему решил Alipay в 2004 году?", a: ["Скорость оплаты", "Недоверие между сторонами", "Кредитование"], c: 1 },
+            { q: "Сколько заказов в секунду обрабатывает Alibaba в пик?", a: ["100 000", "583 000", "50 000"], c: 1 },
+            { q: "Что гарантирует площадка Tmall?", a: ["Самую низкую цену", "Подлинность брендов", "Бесплатный возврат"], c: 1 },
+            { q: "Почему Безос начал продажи именно с книг?", a: ["Легко каталогизировать и доставлять", "Он был издателем", "Книги не ломались"], c: 0 },
+            { q: "Что случится, если облако AWS внезапно отключится?", a: ["Ничего", "Упадёт пол-интернета", "Amazon закроется"], c: 1 },
+            { q: "Какая доля товаров на Amazon от сторонних продавцов?", a: ["10%", "Более 60%", "95%"], c: 1 },
+            { q: "Как называется система предсказания заказов в Amazon?", a: ["Fast Move", "Anticipatory Shipping", "Quick Send"], c: 1 },
+            { q: "Сколько Amazon инвестирует в R&D (разработки) ежегодно?", a: ["Более $10 млрд", "Более $40 млрд", "$5 млрд"], c: 1 }
+        ];
+
+        window.onload = () => {
+            const ali = localStorage.getItem('ali_done');
+            const amz = localStorage.getItem('amz_done');
+            if(ali) document.getElementById('p-alibaba').classList.add('hidden');
+            if(amz) document.getElementById('p-amazon').classList.add('hidden');
+            if(ali && amz) {
+                document.getElementById('main-header').classList.add('hidden');
+                document.getElementById('review-zone').classList.remove('hidden');
+            }
+        }
+
+        function startTest() {
+            document.getElementById('review-zone').classList.add('hidden');
+            document.getElementById('test-zone').classList.remove('hidden');
+            let html = '';
+            questions.forEach((q, i) => {
+                html += `<div class="question-box"><p><b>${i+1}. ${q.q}</b></p>`;
+                q.a.forEach((opt, oi) => {html += `<label class="option"><input type="radio" name="q${i}" value="${oi}"> ${opt}</label>`;
+                });
+                html += `</div>`;
+            });
+            document.getElementById('quiz-content').innerHTML = html;
+        }
+
+        function checkResults() {
+            let score = 0;
+            questions.forEach((q, i) => {
+                const sel = document.querySelector(`input[name="q${i}"]:checked`);
+                if(sel && parseInt(sel.value) === q.c) score++;
+            });
+            const p = (score / questions.length) * 100;
+            document.getElementById('test-zone').classList.add('hidden');
+            document.getElementById('result-zone').classList.remove('hidden');
+            document.getElementById('res-score').innerText = p + '%';
+
+            if(p === 100) {
+                document.getElementById('res-title').innerText = "УСПЕХ!";
+                document.getElementById('res-desc').innerText = "Ты усвоил материал как бог ритейла. Конфетти в твою честь!";
+                confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
+            } else if (p >= 70) {
+                document.getElementById('res-title').innerText = "МАТЕРИАЛ УСВОЕН";
+                document.getElementById('res-desc').innerText = "Хороший результат, но до идеала не хватило чуть-чуть!";
+            } else {
+                document.getElementById('res-title').innerText = "НЕ УСВОЕНО";
+                document.getElementById('res-desc').innerText = "Этот ливень — слезы твоих упущенных знаний. Повтори материал.";
+                startRain();
+            }
+        }
+
+        function startRain() {
+            const container = document.getElementById('rain-container');
+            container.style.display = 'block';
+            for(let i=0; i<80; i++) {
+                let drop = document.createElement('div');
+                drop.className = 'drop';
+                drop.style.left = Math.random()*100+'vw';
+                drop.style.animationDuration = Math.random()+0.4+'s';
+                container.appendChild(drop);
+            }
+        }
+
+        function resetAll() { localStorage.clear(); location.reload(); }
+    </script>
 </body>
 </html>
+
