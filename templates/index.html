@@ -2,136 +2,118 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>Главная — Обучение</title>
+    <title>Tech Giants Course</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
-    <!-- Либа для конфетти -->
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <style>
-        :root { --accent: #007bff; }
+        :root { --accent: #007bff; --bg: #0b0c10; --glass: rgba(255, 255, 255, 0.05); }
+        
         body { 
             background: radial-gradient(circle at top, #1c1e26 0%, #0b0c10 100%); 
-            color: #ffffff; font-family: 'Inter', sans-serif; min-height: 100vh; margin: 0; padding: 50px 20px;
+            color: #ffffff !important; font-family: 'Inter', sans-serif; min-height: 100vh; margin: 0; padding: 60px 20px;
         }
-        .container { max-width: 800px; margin: 0 auto; }
-        
-        /* СТЕКЛЯННЫЕ ПЛАШКИ */
+
+        .container { max-width: 850px; margin: 0 auto; text-align: center; }
+
+        /* ИСПРАВЛЕННЫЕ ПЛАШКИ */
         .glass-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 24px; padding: 40px; margin-bottom: 25px;
-            box-shadow: 0 40px 100px rgba(0,0,0,0.6);
-            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            background: var(--glass);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px; padding: 45px; margin-bottom: 30px;
+            box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+            display: flex; flex-direction: column; align-items: flex-start; /* Все внутри по левому краю */
+            text-align: left; position: relative; overflow: hidden;
+            opacity: 0; transform: translateY(30px); animation: emerge 0.8s forwards;
         }
+        @keyframes emerge { to { opacity: 1; transform: translateY(0); } }
 
-        .hidden { display: none !important; }
+        h1, h2 { color: #ffffff !important; font-weight: 800; margin-top: 0; margin-bottom: 15px; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
+        p { color: #ffffff !important; font-size: 1.15rem; opacity: 0.95; line-height: 1.5; margin-bottom: 30px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
 
-        /* ЧИТАЕМОСТЬ ТЕКСТА */
-        h1, h2 { font-weight: 800; color: #ffffff !important; text-shadow: 0 2px 10px rgba(0,0,0,0.5); }
-        p, li, label { 
-            color: #ffffff !important; 
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.8); 
-            font-size: 1.1rem;
-        }
-
+        /* КНОПКА КОТОРАЯ НЕ ВЫЛЕТАЕТ */
         .btn-link { 
-            display: inline-block; background: var(--accent); color: white !important; 
-            text-decoration: none; padding: 15px 30px; border-radius: 12px; font-weight: bold; 
-            border: none; cursor: pointer; transition: 0.3s; width: 100%; text-align: center;
+            display: inline-block; background: var(--accent); color: #ffffff !important; 
+            text-decoration: none; padding: 16px 35px; border-radius: 14px; font-weight: 700; 
+            transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1); border: none; cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0, 123, 255, 0.3);
         }
-        .btn-link:hover { background: #00a2ff; transform: scale(1.02); box-shadow: 0 0 20px rgba(0, 123, 255, 0.4); }
+        .btn-link:hover { background: #00a2ff; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(0, 123, 255, 0.5); }
 
         /* ТЕСТОВАЯ СЕТКА */
-        .question-box { background: rgba(0,0,0,0.3); padding: 25px; border-radius: 15px; margin-bottom: 20px; border: 1px solid rgba(255,255,255,0.1); }
+        .question-box { width: 100%; background: rgba(0,0,0,0.25); padding: 25px; border-radius: 18px; margin-bottom: 20px; box-sizing: border-box; }
         .option { 
-            display: block; padding: 12px; margin: 8px 0; background: rgba(255,255,255,0.05); 
-            border-radius: 10px; cursor: pointer; transition: 0.2s; border: 1px solid transparent;
+            display: block; padding: 15px; margin: 10px 0; background: rgba(255,255,255,0.05); 
+            border-radius: 10px; cursor: pointer; transition: 0.2s; border: 1px solid transparent; color: #fff !important;
         }
         .option:hover { background: rgba(255,255,255,0.1); border-color: var(--accent); }
-        .option input { margin-right: 12px; transform: scale(1.2); }
+        .hidden { display: none !important; }
 
         /* ЛИВЕНЬ */
-        #rain-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 100; display: none; }
+        #rain-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1000; display: none; }
         .drop { position: absolute; width: 1px; height: 25px; background: white; opacity: 0.3; animation: fall linear infinite; }
         @keyframes fall { to { transform: translateY(100vh); } }
     </style>
 </head>
 <body>
     <div id="rain-container"></div>
-    <div class="container text-center">
+    <div class="container" id="app">
         
-        <div id="welcome-header">
-            <h1 style="font-size: 2.5rem; margin-bottom: 40px;">Курс: Техно-Гиганты</h1>
-        </div>
+        <h1 style="font-size: 3rem; margin-bottom: 50px;">Курс: Техно-Гиганты</h1>
 
-        <!-- Плашки компаний -->
         <div id="plates-container">
-            <div id="plate-alibaba" class="glass-card text-start">
+            <div id="plate-alibaba" class="glass-card">
                 <h2>Alibaba Group</h2>
-                <p>История Джека Ма и экосистема Востока.</p>
+                <p>История Джека Ма и экспансия глобального Левиафана из Китая.</p>
                 <a href="/alibaba" class="btn-link">Изучить материал</a>
             </div>
 
-            <div id="plate-amazon" class="glass-card text-start">
+            <div id="plate-amazon" class="glass-card">
                 <h2>Amazon Inc.</h2>
-                <p>Империя Безоса и облачные технологии AWS.</p>
+                <p>Анализ логистической империи Безоса и мощнейших облаков AWS.</p>
                 <a href="/amazon" class="btn-link">Изучить материал</a>
-                 </div>
-        </div>
-
-        <!-- ОКНО ПОВТОРЕНИЯ (Появится, если обе плашки скрыты) -->
-        <div id="review-zone" class="glass-card hidden text-start">
-            <h1>Материал усвоен! 🧠</h1>
-            <p>Вспомни базу перед тестом:</p>
-            <ul style="color: #ffffff;">
-                <li><b>Alibaba:</b> 1999г, Таобао (0% комиссии), Алипей для доверия, 583к заказов/сек.</li>
-                <li><b>Amazon:</b> Книги (логистика), AWS держит пол-интернета, Anticipatory Shipping.</li>
-            </ul>
-            <button class="btn-link" onclick="startTest()">ПРОЙТИ ФИНАЛЬНЫЙ ТЕСТ</button>
-        </div>
-
-        <!-- ЗОНА ТЕСТА -->
-        <div id="test-zone" class="glass-card hidden text-start">
-            <h1>Тестирование</h1>
-            <div id="quiz-content">
-                <!-- Сюда JS вставит вопросы -->
             </div>
-            <button class="btn-link" onclick="checkTest()">УЗНАТЬ МОЙ БАЛЛ</button>
         </div>
 
-        <!-- ФИНАЛЬНЫЙ ЭКРАН -->
-        <div id="result-zone" class="glass-card hidden">
+        <div id="review-zone" class="glass-card hidden">
+            <h2>Материал пройден! 🧠</h2>
+            <p>Проверь себя: вспомни про 583к заказов/сек и облако AWS. Готов к тесту?</p>
+            <button class="btn-link" style="width: 100%;" onclick="startTest()">НАЧАТЬ ФИНАЛЬНЫЙ ТЕСТ</button>
+        </div>
+
+        <div id="test-zone" class="glass-card hidden">
+            <h2>Итоговый Тест</h2>
+            <div id="quiz-content" style="width: 100%;"></div>
+            <button class="btn-link" style="width: 100%;" onclick="checkTest()">ОТПРАВИТЬ ОТВЕТЫ</button>
+        </div>
+
+        <div id="result-zone" class="glass-card hidden" style="align-items: center; text-align: center;">
             <h1 id="res-title"></h1>
-            <div id="res-score" style="font-size: 5rem; font-weight: 800; color: #00a2ff; margin: 20px 0;"></div>
-            <p id="res-desc" style="margin-bottom: 30px;"></p>
-            <button class="btn-link" onclick="location.reload()">НАЧАТЬ ЗАНОВО</button>
+            <div id="res-score" style="font-size: 5rem; color: var(--accent); margin: 20px 0;"></div>
+            <p id="res-desc"></p>
+            <button class="btn-link" onclick="location.reload()">В НАЧАЛО</button>
         </div>
     </div>
 
     <script>
-        // ВОПРОСЫ ПО ТВОЕМУ ТЕКСТУ
         const questions = [
-            { q: "Где Джек Ма основал Alibaba в 1999 году?", a: ["В офисе", "В своей квартире", "В гараже"], c: 1 },
-            { q: "Почему Taobao победил eBay в Китае?", a: ["Быстрая доставка", "0% комиссии для продавцов", "Низкие цены"], c: 1 },
-            { q: "Что решила система Alipay в 2004 году?", a: ["Скорость интернета", "Недоверие между сторонами", "Налоги"], c: 1 },
-            { q: "Сколько заказов в секунду обрабатывает Alibaba в пик?", a: ["100к", "583к", "1млн"], c: 1 },
-            { q: "Что гарантирует Tmall?", a: ["Скидки", "Подлинность брендов", "Бесплатную еду"], c: 1 },
-            { q: "Почему Безос начал именно с книг?", a: ["Любил читать", "Легко доставлять и каталогизировать", "Знал авторов"], c: 1 },
-            { q: "Что будет, если упадет AWS?", a: ["Ничего", "Упадет пол-интернета (Netflix, Reddit)", "Amazon закроется"], c: 1 },
-            { q: "Сколько товаров на Amazon от сторонних продавцов?", a: ["30%", "60%", "90%"], c: 1 },
-            { q: "Как называется система предсказания покупок Amazon?", a: ["Future Send", "Anticipatory Shipping", "Smart Box"], c: 1 },
-            { q: "Сколько Amazon тратит на разработки (R&D) в год?", a: ["$10 млрд", "$40 млрд", "$80 млрд"], c: 1 }
+            { q: "Где Джек Ма основал Alibaba?", a: ["В офисе", "В своей квартире", "В гараже"], c: 1 },
+            { q: "Почему Taobao победил eBay в Китае?", a: ["Доставка", "Нет комиссий для продавцов", "Цены"], c: 1 },
+            { q: "Что решила система Alipay?", a: ["Скорость", "Недоверие партнеров", "Налоги"], c: 1 },
+            { q: "Сколько заказов в секунду в Alibaba?", a: ["100к", "583к", "1млн"], c: 1 },
+            { q: "Что гарантирует Tmall?", a: ["Скидки", "Подлинность товаров", "Еду"], c: 1 },
+            { q: "Почему Безос начал с книг?", a: ["Любил их", "Легкая логистика", "Бизнес-план"], c: 1 },
+            { q: "Если упадет AWS?", a: ["Ничего", "Упадет пол-интернета", "Конец Amazon"], c: 1 },
+            { q: "Доля товаров Marketplace на Amazon?", a: ["30%", "60%", "90%"], c: 1 },
+            { q: "Система предсказания заказов Amazon?", a: ["Fast Send", "Anticipatory Shipping", "Smart Box"], c: 1 },
+            { q: "Траты Amazon на R&D в год?", a: ["$10 млрд", "$40 млрд", "$80 млрд"], c: 1 }
         ];
 
         window.onload = () => {
-            const ali = localStorage.getItem('ali_done');
-            const amz = localStorage.getItem('amz_done');
-            
-            if(ali) document.getElementById('plate-alibaba').classList.add('hidden');
-            if(amz) document.getElementById('plate-amazon').classList.add('hidden');
-
-            if(ali && amz) {
-                document.getElementById('welcome-header').classList.add('hidden');
+            if(localStorage.getItem('ali_done')) document.getElementById('plate-alibaba').classList.add('hidden');
+            if(localStorage.getItem('amz_done')) document.getElementById('plate-amazon').classList.add('hidden');
+            if(localStorage.getItem('ali_done') && localStorage.getItem('amz_done')) {
+                document.getElementById('plates-container').classList.add('hidden');
                 document.getElementById('review-zone').classList.remove('hidden');
             }
         }
@@ -139,52 +121,40 @@
         function startTest() {
             document.getElementById('review-zone').classList.add('hidden');
             document.getElementById('test-zone').classList.remove('hidden');
-            let html = '';
+            let h = '';
             questions.forEach((q, i) => {
-                html += `<div class="question-box"><p><b>${i+1}. ${q.q}</b></p>`;
-                q.a.forEach((opt, oi) => {
-                    html += `<label class="option"><input type="radio" name="q${i}" value="${oi}"> ${opt}</label>`;
-                });
-                html += `</div>`;
+                h += `<div class="question-box"><p><b>${i+1}. ${q.q}</b></p>`;
+                q.a.forEach((opt, oi) => h += `<label class="option"><input type="radio" name="q${i}" value="${oi}"> ${opt}</label>`);
+                h += `</div>`;
             });
-            document.getElementById('quiz-content').innerHTML = html;
+            document.getElementById('quiz-content').innerHTML = h;
         }
 
         function checkTest() {
-            let score = 0;
+            let s = 0;
             questions.forEach((q, i) => {
-                const sel = document.querySelector(`input[name="q${i}"]:checked`);
-[02.05.2026 15:44] Сэм – ChatGPT нейросеть 🧠: if(sel && parseInt(sel.value) === q.c) score++;
+                const checked = document.querySelector(`input[name="q${i}"]:checked`);
+                if(checked && parseInt(checked.value) === q.c) s++;
             });
-
-            const p = (score / questions.length) * 100;
+            const p = (s / questions.length) * 100;
             document.getElementById('test-zone').classList.add('hidden');
-            const resZone = document.getElementById('result-zone');
-            resZone.classList.remove('hidden');
+            document.getElementById('result-zone').classList.remove('hidden');
             document.getElementById('res-score').innerText = p + '%';
-
             if(p === 100) {
-                document.getElementById('res-title').innerText = "КРАСАВА! 100%";
-                document.getElementById('res-desc').innerText = "Ты выучил всё! Лови конфетти!";
+                document.getElementById('res-title').innerText = "ПРОЙДЕНО!";
                 confetti({ particleCount: 200, spread: 100, origin: { y: 0.6 } });
-            } else if (p >= 70) {
-                document.getElementById('res-title').innerText = "ХОРОШО!";
-                document.getElementById('res-desc').innerText = "Материал усвоен, но есть куда расти.";
-            } else {
+            } else if (p < 70) {
                 document.getElementById('res-title').innerText = "НЕ УСВОЕНО";
-                document.getElementById('res-desc').innerText = "Ливень грусти... Попробуй еще раз.";
                 startRain();
-            }
+            } else { document.getElementById('res-title').innerText = "ХОРОШО"; }
         }
 
         function startRain() {
             const container = document.getElementById('rain-container');
             container.style.display = 'block';
-            for(let i=0; i<100; i++){
-                let d = document.createElement('div');
-                d.className = 'drop';
-                d.style.left = Math.random()*100+'vw';
-                d.style.animationDuration = Math.random()+0.5+'s';
+            for(let i=0; i<100; i++) {
+                let d = document.createElement('div'); d.className = 'drop';
+                d.style.left = Math.random()*100+'vw'; d.style.animationDuration = Math.random()+0.5+'s';
                 container.appendChild(d);
             }
         }
