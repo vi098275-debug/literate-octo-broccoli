@@ -6,30 +6,46 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        body { background-color: #0b0c10; color: #fff; font-family: 'Inter', sans-serif; padding-top: 50px; }
+        body { 
+            background-color: #0b0c10; 
+            color: #ffffff; 
+            font-family: 'Inter', sans-serif; 
+            padding-top: 30px; 
+            line-height: normal;
+        }
         .content-box { 
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); 
-            border-radius: 20px; padding: 40px; backdrop-filter: blur(10px);
+            background: rgba(20, 22, 27, 0.95); /* Темнее и плотнее фон */
+            border: 1px solid rgba(255, 255, 255, 0.2); 
+            border-radius: 12px; 
+            padding: 40px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        h1 { font-weight: 800; color: #fff; margin-bottom: 10px; border-left: 5px solid #007bff; padding-left: 15px; }
-        .badge { font-size: 0.9rem; background-color: #007bff !important; padding: 8px 15px; margin-bottom: 30px; border-radius: 5px; }
+        h1 { font-weight: 800; color: #ffffff; margin-bottom: 10px; text-shadow: 2px 2px 4px #000; }
+        .badge { 
+            font-size: 1rem; 
+            background-color: #007bff !important; 
+            padding: 8px 15px; 
+            margin-bottom: 25px; 
+            font-weight: bold;
+        }
         
-        /* ВОТ ТУТ ПОПРАВИЛ ЦВЕТ ТЕКСТА */
+        /* ГЛАВНОЕ: КИПЕЛЬНО БЕЛЫЙ ЦВЕТ */
         .text-body { 
-            font-size: 1.15rem; 
-            line-height: 1.8; 
-            color: #ececec; /* Очень светлый серый, почти белый */
+            font-size: 1.2rem; 
+            line-height: 1.7; 
+            color: #ffffff !important; /* ЧИСТО БЕЛЫЙ */
             white-space: pre-line; 
-            text-align: justify; 
+            text-align: justify;
+            text-shadow: 1px 1px 2px rgba(0,0,0,1); /* Тень для читаемости */
         }
         
-        .back-btn { color: #007bff; text-decoration: none; font-weight: 700; margin-bottom: 20px; display: inline-block; transition: 0.3s; }
-        .back-btn:hover { color: #fff; transform: translateX(-5px); }
+        .back-btn { color: #00a2ff; text-decoration: none; font-weight: 700; display: inline-block; margin-bottom: 15px; }
+        .back-btn:hover { color: #ffffff; }
     </style>
 </head>
 <body>
     <div class="container mb-5">
-        <a href="/" class="back-btn">← ВЕРНУТЬСЯ НА ПАНЕЛЬ</a>
+        <a href="/" class="back-btn">← НА ГЛАВНУЮ</a>
         <div class="content-box">
             <h1>{{ title }}</h1>
             <div class="badge">{{ mode }}</div>
@@ -38,4 +54,3 @@
     </div>
 </body>
 </html>
-
